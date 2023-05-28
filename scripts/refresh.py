@@ -8,6 +8,11 @@ import toml
 from PIL import Image, ImageDraw, ImageFont
 import arrow
 
+try:
+    from inky.auto import auto
+    inky = auto()
+except ImportError:
+    inky = None
 
 scripts_dir = Path(__file__).parent
 project_dir = scripts_dir.parent 
@@ -128,6 +133,13 @@ draw_histogram()
 
 # resize with anti-aliasing
 image = image.resize((display_width, display_height), Image.LANCZOS)
-image.show()
+
+if inky:
+    inky.set_image(image)
+    inky.show()
+else:
+    image.show()
+
+
 
 
