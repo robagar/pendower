@@ -114,10 +114,15 @@ def draw_heights():
         draw.line([(0,y), (w,y)], fill="gray") 
         draw.text((10, y), f'{i}m', font=wave_height_font, fill="gray") 
 
+def draw_now():
+    x = time_x(arrow.now())
+    draw.line([(x,0), (x,h)], fill="red")
+
 def draw_histogram():
     draw_histogram_bars()
     draw_days()
     draw_heights()
+    draw_now()
 
 draw_histogram()
 
