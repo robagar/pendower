@@ -27,7 +27,7 @@ class Stormglass:
         'waveHeight,wavePeriod,swellHeight,swellDirection,waterTemperature,airTemperature,windSpeed,windDirection'
         '''
         f = self._weather_data_file
-        if not f.exists() or self._is_stale(f):
+        if self._is_stale(f):
             print("[Stormglass] fetching weather data...")
             raw_data = self._fetch_weather(spot, time_span, *params)
             # cache for reuse
@@ -70,8 +70,13 @@ class Stormglass:
             return json.load(f)
 
     def _is_stale(self, file_path):
-        # TODO
-        return False
+        if not file_path.exists():
+            return True
+
+        modified = arrow.get(file_path.stat().st_mtime)
+        now = arrow.now()
+
+        return modified.date() != now.date()
 
     def _prepare_weather_data(self, raw_data):
         def value(d, name):
