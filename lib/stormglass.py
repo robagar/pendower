@@ -22,14 +22,14 @@ class Stormglass:
 
         self._weather_data_file = data_dir / 'weather.json'
 
-    def get_weather(self, spot, *params):
+    def get_weather(self, spot, time_span, *params):
         '''
         'waveHeight,wavePeriod,swellHeight,swellDirection,waterTemperature,airTemperature,windSpeed,windDirection'
         '''
         f = self._weather_data_file
         if not f.exists() or self._is_stale(f):
             print("[Stormglass] fetching weather data...")
-            raw_data = self._fetch_weather(spot, *params)
+            raw_data = self._fetch_weather(spot, time_span, *params)
             # cache for reuse
             self._save_data(raw_data, f)
         else:
@@ -38,14 +38,17 @@ class Stormglass:
 
         return self._prepare_weather_data(raw_data)
 
-    def _fetch_weather(self, spot, *params):
+    def _fetch_weather(self, spot, time_span, *params):
+        (time_from, time_to) = time_span
         response = requests.get(
           'https://api.stormglass.io/v2/weather/point',
           params={
             'lat': spot.latitude,
             'lng': spot.longitude,
             'params': ",".join(params),
-            'source': 'sg' # automatically choose best source
+            'source': 'sg', # automatically choose best source
+            'start': time_from.timestamp(),
+            'end': time_to.timestamp()
           },
           headers={
             'Authorization': self._api_key
@@ -79,4 +82,5 @@ class Stormglass:
             time=arrow.get(d["time"]), 
             wave_height=value(d, "waveHeight")
         ), raw_data["hours"]))
+
 
