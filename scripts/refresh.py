@@ -57,6 +57,8 @@ h = display_height * 4
 t_from = time_from.timestamp()
 t_to = time_to.timestamp()
 
+print(f'{time_from} → {time_to}')
+
 def time_x(t):
     return w * (t.timestamp() - t_from) / (t_to - t_from)  
 
@@ -83,8 +85,8 @@ def draw_histogram_bars():
         x = time_x(d.time)
         y = bottom - d.wave_height * wave_pixels_per_metre
 
-        if last_x:
-            points.append((last_x, y))            
+        if last_x is not None:
+            points.append((last_x, y))
 
         points.append((x, y))
         
