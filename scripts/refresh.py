@@ -31,6 +31,7 @@ def import_lib(name):
 
 sg = import_lib("stormglass")
 util = import_lib("util")
+bezier = import_lib("bezier")
 
 config_file = scripts_dir / "config.toml"
 
@@ -51,7 +52,6 @@ print(f'{time_from} → {time_to}')
 
 weather_data = stormglass.get_weather(spot, time_span, 'waveHeight')
 tide_data = stormglass.get_tides(spot, time_span)
-print(tide_data)
 
 # actual display size
 display_width = 640
@@ -77,13 +77,32 @@ day_font = ImageFont.truetype(f'{assets_dir / "OpenSans.ttf"}', 80)
 ##############################################################################
 # tides
 
-tide_pixels_per_metre = 30    
+tide_pixels_per_metre = 50    
 
 def tide_y(h):
-    return 200 - h * tide_pixels_per_metre
+    return 250 - h * tide_pixels_per_metre
 
 def draw_tides():
-    points = list(map(lambda t: (time_x(t.time), tide_y(t.height)), tide_data))
+    points = []
+    last_x = None
+    last_y = None 
+    for t in tide_data:
+        x = time_x(t.time)
+        y = tide_y(t.height)
+        if last_x is not None:
+            control_points = []
+            d = (x - last_x) / 3
+            control_points.append((last_x,last_y))
+            control_points.append((last_x + d, last_y))
+            control_points.append((x - d, y))
+            control_points.append((x,y))
+
+            curve_bezier = bezier.make_bezier(control_points)
+            ts = [t/100.0 for t in range(101)]
+            points.extend(curve_bezier(ts))
+        last_x = x
+        last_y = y
+
     draw.line(points, fill="green", width=8)
 
 ##############################################################################
@@ -156,7 +175,7 @@ def draw_wave_height_lines_human():
 def draw_now():
     x = time_x(arrow.now())
     h = draw_height
-    draw.line([(x,0), (x,h)], fill="red")
+    draw.line([(x,0), (x,h)], fill="red", width=4)
 
 def draw_all():
     draw_tides()
