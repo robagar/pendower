@@ -21,12 +21,16 @@ data_dir = project_dir / "data"
 assets_dir = project_dir / "assets"
 
 ##############################################################################
-# Python import 
-spec = importlib.util.spec_from_file_location("stormglass", lib_dir / "stormglass.py")
-sg = importlib.util.module_from_spec(spec)
-sys.modules["stormglass"] = sg
-spec.loader.exec_module(sg)
+def import_lib(name): 
+    spec = importlib.util.spec_from_file_location(name, lib_dir / f"{name}.py")
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[name] = module
+    spec.loader.exec_module(module)
+    return module
 ###############################################################################
+
+sg = import_lib("stormglass")
+util = import_lib("util")
 
 config_file = scripts_dir / "config.toml"
 
@@ -42,6 +46,8 @@ today = arrow.now().floor('day')
 
 num_days = 3
 time_span = today.span('day', num_days)
+(time_from, time_to) = time_span
+print(f'{time_from} → {time_to}')
 
 data = stormglass.get_weather(spot, time_span, 'waveHeight')
 
@@ -53,11 +59,8 @@ display_height = 400
 w = display_width * 4
 h = display_height * 4
 
-(time_from, time_to) = time_span
 t_from = time_from.timestamp()
 t_to = time_to.timestamp()
-
-print(f'{time_from} → {time_to}')
 
 def time_x(t):
     return w * (t.timestamp() - t_from) / (t_to - t_from)  
@@ -75,7 +78,7 @@ wave_pixels_per_metre = 300
     
 bottom = h - 150
 
-def draw_histogram_bars():
+def draw_wave_height_bars():
     n = len(data)
     dx =  w / n
     points = [(0,bottom)]
@@ -115,23 +118,35 @@ def draw_days():
 
         draw.text((x + 20, h - 130), day_name, font=day_font, fill="black")
 
-def draw_heights():
+def draw_wave_height_lines_metres():
     for i in range(1,5):
         y = bottom - i * wave_pixels_per_metre
         draw.line([(0,y), (w,y)], fill="gray") 
         draw.text((10, y), f'{i}m', font=wave_height_font, fill="gray") 
 
+def draw_wave_height_lines_feet():
+    for (h,l) in [(3, "3ft"), (6, "6ft"), (9, "9ft")]:
+        y = bottom - util.feet_to_metres(h) * wave_pixels_per_metre
+        draw.line([(0,y), (w,y)], fill="gray") 
+        draw.text((10, y), l, font=wave_height_font, fill="gray") 
+
+def draw_wave_height_lines_human():
+    for (h,l) in [(0.5, "flat"), (3, "small"), (6, "large"), (9, "huge!")]:
+        y = bottom - util.feet_to_metres(h) * wave_pixels_per_metre
+        draw.line([(0,y), (w,y)], fill="gray") 
+        draw.text((10, y), l, font=wave_height_font, fill="gray") 
+
 def draw_now():
     x = time_x(arrow.now())
     draw.line([(x,0), (x,h)], fill="red")
 
-def draw_histogram():
-    draw_histogram_bars()
+def draw_wave_heights():
+    draw_wave_height_bars()
     draw_days()
-    draw_heights()
+    draw_wave_height_lines_human()
     draw_now()
 
-draw_histogram()
+draw_wave_heights()
 
 # resize with anti-aliasing
 image = image.resize((display_width, display_height), Image.LANCZOS)
