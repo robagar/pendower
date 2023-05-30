@@ -96,7 +96,7 @@ def draw_nights():
 tide_pixels_per_metre = 50    
 
 def tide_y(h):
-    return 250 - h * tide_pixels_per_metre
+    return 280 - h * tide_pixels_per_metre
 
 def draw_tides():
     points = []
@@ -125,7 +125,7 @@ def draw_tides():
 # wave height
 
 wave_height_font = ImageFont.truetype(f'{assets_dir / "OpenSans.ttf"}', 60)
-wave_pixels_per_metre = 300    
+wave_pixels_per_metre = 360    
 bottom = draw_height - 150
 
 def draw_wave_height_bars():
@@ -165,7 +165,8 @@ def draw_days():
         if i != 0:
             draw.line([(x,0), (x,h)], fill="gray")
 
-        draw.text((x + 20, h - 130), day_name, font=day_font, fill="black")
+        x = time_x(day.shift(hours=+12))
+        draw.text((x + 20, h - 130), day_name, anchor="ma", font=day_font, fill="black")
 
 def draw_wave_height_lines_metres():
     w = draw_width
