@@ -52,6 +52,7 @@ print(f'{time_from} → {time_to}')
 
 weather_data = stormglass.get_weather(spot, time_span, 'waveHeight')
 tide_data = stormglass.get_tides(spot, time_span)
+astronomy_data = stormglass.get_astronomy(spot, time_span)
 
 # actual display size
 display_width = 640
@@ -73,6 +74,21 @@ draw = ImageDraw.Draw(image)
 
 days = arrow.Arrow.interval('days', time_from, time_to)
 day_font = ImageFont.truetype(f'{assets_dir / "OpenSans.ttf"}', 80)
+
+##############################################################################
+# nights
+
+def draw_nights():
+    h = draw_height
+    sunset_x = 0
+    for a in astronomy_data:
+        x = time_x(a.sunrise)
+        draw.rectangle([(sunset_x,0), (x, h)], fill='lightgray')
+        sunset_x = time_x(a.sunset)
+
+    w = draw_width
+    if sunset_x < w:
+        draw.rectangle([(sunset_x,0), (w, h)], fill='lightgray')
 
 ##############################################################################
 # tides
@@ -178,6 +194,7 @@ def draw_now():
     draw.line([(x,0), (x,h)], fill="red", width=4)
 
 def draw_all():
+    draw_nights()
     draw_tides()
     draw_wave_height_bars()
     draw_days()

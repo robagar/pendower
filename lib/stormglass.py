@@ -10,16 +10,34 @@ class Spot:
     latitude: float
     longitude: float
 
+
 @dataclass
 class Weather:
     time: arrow.Arrow
     wave_height: float
+
 
 @dataclass
 class Tide:
     time: arrow.Arrow
     description: str
     height: float
+
+
+@dataclass
+class Astronomy:
+    time: arrow.Arrow
+    sunrise: arrow.Arrow
+    sunset: arrow.Arrow
+    moonrise: arrow.Arrow
+    moonset: arrow.Arrow
+    astronomical_dawn: arrow.Arrow
+    astronomical_dusk: arrow.Arrow
+    nautical_dawn: arrow.Arrow
+    nautical_dusk: arrow.Arrow
+    civil_dawn: arrow.Arrow
+    civil_dusk: arrow.Arrow
+
 
 class Stormglass:
     def __init__(self, config, data_dir):
@@ -28,6 +46,7 @@ class Stormglass:
 
         self._weather_data_file = data_dir / 'weather.json'
         self._tide_data_file = data_dir / 'tides.json'
+        self._astonomy_data_file = data_dir / 'astronomy.json'
 
     def get_weather(self, spot, time_span, *weather_params):
         '''
@@ -69,6 +88,30 @@ class Stormglass:
             time=arrow.get(d["time"]),
             description=d["type"], 
             height=d["height"]
+        ), raw_data["data"]))
+
+    def get_astronomy(self, spot, time_span):
+        raw_data = self._load_or_fetch_data(
+            self._astonomy_data_file, 
+            "astronomy/point", 
+            spot, 
+            time_span)
+
+        return self._prepare_astronomy_data(raw_data)
+
+    def _prepare_astronomy_data(self, raw_data):
+        return list(map(lambda d: Astronomy(
+            time=arrow.get(d["time"]),
+            sunrise=_maybe_time(d, "sunrise"),
+            sunset=_maybe_time(d, "sunset"),
+            moonrise=_maybe_time(d, "moonrise"),
+            moonset=_maybe_time(d, "moonset"),
+            astronomical_dawn=_maybe_time(d, "astronomicalDawn"),
+            astronomical_dusk=_maybe_time(d, "astronomicalDusk"),
+            nautical_dawn=_maybe_time(d, "nauticalDawn"),
+            nautical_dusk=_maybe_time(d, "nauticalDusk"),
+            civil_dawn=_maybe_time(d, "civilDawn"),
+            civil_dusk=_maybe_time(d, "civilDusk"),
         ), raw_data["data"]))
 
     def _load_or_fetch_data(self, data_file, endpoint, spot, time_span, **params):
@@ -126,4 +169,7 @@ class Stormglass:
         return modified.date() != now.date()
 
 
-
+def _maybe_time(data, key):
+    t = data.get(key)
+    if t is not None:
+        return arrow.get(t)
