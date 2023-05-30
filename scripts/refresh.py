@@ -32,6 +32,7 @@ def import_lib(name):
 sg = import_lib("stormglass")
 util = import_lib("util")
 bezier = import_lib("bezier")
+gradient = import_lib("gradient")
 
 config_file = scripts_dir / "config.toml"
 
@@ -147,7 +148,7 @@ def draw_wave_height_bars():
     points.append((draw_width, last_y))
     points.append((draw_width, bottom))
 
-    draw.polygon(points, fill="blue")
+    gradient.draw_vertical_gradient_polygon(image, points, bottom='navy', top='aquamarine')
 
 def draw_days():
     h = draw_height
