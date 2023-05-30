@@ -188,10 +188,18 @@ def draw_wave_height_lines_human():
         draw.line([(0,y), (w,y)], fill="gray") 
         draw.text((10, y), l, font=wave_height_font, fill="gray") 
 
+now_font = ImageFont.truetype(f'{assets_dir / "OpenSans.ttf"}', 60)
 def draw_now():
-    x = time_x(arrow.now())
+    t = arrow.now()
+    x = time_x(t)
     h = draw_height
     draw.line([(x,0), (x,h)], fill="red", width=4)
+    draw.text((x + 10, 0), t.format("HH:mm"), font=now_font, anchor="la", fill="red")
+
+
+title_font = ImageFont.truetype(f'{assets_dir / "OpenSans.ttf"}', 100)
+def draw_title():
+    draw.text((draw_width - 20, 0), spot.name, font=title_font, anchor="ra", fill="black")
 
 def draw_all():
     draw_nights()
@@ -200,6 +208,7 @@ def draw_all():
     draw_days()
     draw_wave_height_lines_human()
     draw_now()
+    draw_title()
 
 draw_all()
 
