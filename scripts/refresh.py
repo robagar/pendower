@@ -70,7 +70,7 @@ def time_x(t):
     w = draw_width
     return w * (t.timestamp() - t_from) / (t_to - t_from)  
 
-image = Image.new("RGB", (draw_width, draw_height), "white")
+image = Image.new("RGB", (draw_width, draw_height), "seashell")
 draw = ImageDraw.Draw(image)
 
 days = arrow.Arrow.interval('days', time_from, time_to)
@@ -81,15 +81,26 @@ day_font = ImageFont.truetype(f'{assets_dir / "OpenSans.ttf"}', 80)
 
 def draw_nights():
     h = draw_height
+    w = draw_width
+
     sunset_x = 0
     for a in astronomy_data:
         x = time_x(a.sunrise)
         draw.rectangle([(sunset_x,0), (x, h)], fill='lightgray')
         sunset_x = time_x(a.sunset)
 
-    w = draw_width
     if sunset_x < w:
         draw.rectangle([(sunset_x,0), (w, h)], fill='lightgray')
+
+    dusk_x = 0    
+    for a in astronomy_data:
+        x = time_x(a.nautical_dawn)
+        draw.rectangle([(dusk_x,0), (x, h)], fill='silver')
+        dusk_x = time_x(a.nautical_dusk)
+
+    if dusk_x < w:
+        draw.rectangle([(dusk_x,0), (w, h)], fill='silver')
+
 
 ##############################################################################
 # tides
