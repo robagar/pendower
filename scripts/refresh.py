@@ -70,7 +70,7 @@ def time_x(t):
     w = draw_width
     return w * (t.timestamp() - t_from) / (t_to - t_from)  
 
-image = Image.new("RGB", (draw_width, draw_height), "seashell")
+image = Image.new("RGB", (draw_width, draw_height), "white")
 draw = ImageDraw.Draw(image)
 
 days = arrow.Arrow.interval('days', time_from, time_to)
