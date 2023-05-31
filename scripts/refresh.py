@@ -185,21 +185,21 @@ def draw_wave_height_lines_metres():
     for i in range(1,5):
         y = bottom - i * wave_pixels_per_metre
         draw.line([(0,y), (w,y)], fill="gray") 
-        draw.text((10, y), f'{i}m', font=wave_height_font, fill="gray") 
+        draw.text((10, y), f'{i}m', font=wave_height_font, fill="black") 
 
 def draw_wave_height_lines_feet():
     w = draw_width
     for (h,l) in [(3, "3ft"), (6, "6ft"), (9, "9ft")]:
         y = bottom - util.feet_to_metres(h) * wave_pixels_per_metre
         draw.line([(0,y), (w,y)], fill="gray") 
-        draw.text((10, y), l, font=wave_height_font, fill="gray") 
+        draw.text((10, y), l, font=wave_height_font, fill="black") 
 
 def draw_wave_height_lines_human():
     w = draw_width
     for (h,l) in [(3, "small"), (6, "large"), (9, "huge!")]:
         y = bottom - util.feet_to_metres(h) * wave_pixels_per_metre
         draw.line([(0,y), (w,y)], fill="gray") 
-        draw.text((10, y), l, font=wave_height_font, fill="gray") 
+        draw.text((10, y), l, font=wave_height_font, fill="black") 
 
 now_font = ImageFont.truetype(f'{assets_dir / "OpenSans.ttf"}', 60)
 def draw_now():
