@@ -8,6 +8,7 @@ Designed for
 * [Raspberry Pi Zero](https://www.raspberrypi.com/products/raspberry-pi-zero/)
 * [Inky Impression 4"](https://shop.pimoroni.com/products/inky-impression-4?variant=39599238807635) e-ink display
 * Pendower Beach, Cornwall - my local beach, great for swimming and very occasionally surfable :)
+* ...but can be configured for other locations
 
 Data from the fantastic [stormglass.io](https://stormglass.io) API.  It only makes three requests per day, so is well under the limit for the free non-commercial plan.
 
