@@ -34,7 +34,7 @@ util = import_lib("util")
 bezier = import_lib("bezier")
 gradient = import_lib("gradient")
 
-config_file = scripts_dir / "config.toml"
+config_file = project_dir / "config.toml"
 
 with open(config_file, "r") as f:
     config = toml.load(f)

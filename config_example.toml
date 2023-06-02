@@ -1,0 +1,10 @@
+# 1. Edit this file with your configuration
+# 2. Save as "config.toml" in the project root directory
+
+[spot]
+name = "Pendower Beach"
+latitude = 50.204553
+longitude = -4.947837
+
+[stormglass]
+api_key = "(your stormglass.io API key)"
