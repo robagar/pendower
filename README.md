@@ -10,6 +10,11 @@ Designed for
 * Pendower Beach, Cornwall - my local beach, great for swimming and very occasionally surfable :)
 * ...but can be configured for other locations
 
+For the configured spot it shows the next three days 
+* High and low tides
+* Wave heights over time (combined swell and wind waves)
+* Sunrise and sunset, with nautical twilight 
+
 Data from the fantastic [stormglass.io](https://stormglass.io) API.  It only makes three requests per day, so is well under the limit for the free non-commercial plan.
 
 ## Installation
