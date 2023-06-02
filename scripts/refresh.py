@@ -219,7 +219,7 @@ def draw_all():
     draw_tides()
     draw_wave_height_bars()
     draw_days()
-    draw_wave_height_lines_human()
+    draw_wave_height_lines_feet()
     draw_now()
     draw_title()
 
