@@ -4,16 +4,15 @@
 
 A simple app for displaying local tide and surf conditions.
 
+* High and low tides over the next few days
+* Wave heights (combined swell and wind waves)
+* Sunrise and sunset, with nautical twilight 
+
 Designed for
 * [Raspberry Pi Zero](https://www.raspberrypi.com/products/raspberry-pi-zero/)
 * [Inky Impression 4"](https://shop.pimoroni.com/products/inky-impression-4?variant=39599238807635) e-ink display
 * Pendower Beach, Cornwall - my local beach, great for swimming and very occasionally surfable :)
 * ...but can be configured for other locations
-
-For the configured spot it shows the next three days 
-* High and low tides
-* Wave heights over time (combined swell and wind waves)
-* Sunrise and sunset, with nautical twilight 
 
 Data from the fantastic [stormglass.io](https://stormglass.io) API.  It only makes three requests per day, so is well under the limit for the free non-commercial plan.
 
