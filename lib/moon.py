@@ -6,8 +6,6 @@ outline = 'black'
 new_moon_fill = 'black'
 new_moon_outline = 'white'
 
-outline_width = 4
-
 def draw_moon(draw, center_xy, radius, phase, rotation_degrees):
     rotation = radians(rotation_degrees)
     if phase > 0.5:
@@ -17,7 +15,7 @@ def draw_moon(draw, center_xy, radius, phase, rotation_degrees):
         return list(map(lambda p: translate(center_xy, scale(radius, rotate(rotation, p))), ps))
 
     def draw_polygon(ps):
-        draw.polygon(transform(ps), fill=fill, outline=outline, width=outline_width)
+        draw.polygon(transform(ps), fill=fill, outline=outline)
 
     def transform_no_rotation(ps):
         return list(map(lambda p: translate(center_xy, scale(radius, p)), ps))
@@ -26,7 +24,7 @@ def draw_moon(draw, center_xy, radius, phase, rotation_degrees):
 
     if phase == 0:
         # new moon
-        draw.ellipse(box, fill=new_moon_fill, outline=new_moon_outline, width=outline_width)
+        draw.ellipse(box, fill=new_moon_fill, outline=new_moon_outline)
 
     elif phase < 0.5:
         # waxing  
@@ -47,7 +45,7 @@ def draw_moon(draw, center_xy, radius, phase, rotation_degrees):
 
     elif phase == 0.5:
         # full
-        draw.ellipse(box, fill=fill, outline=outline, width=outline_width)
+        draw.ellipse(box, fill=fill, outline=outline)
 
     else:
         # waning
