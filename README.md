@@ -54,3 +54,13 @@ To refresh the display every 15 minutes with cron, run `crontab -e` and add a li
 */15 * * * * /your/path/to/pendower/scripts/refresh.py
 ```
 
+## Version History
+
+### 1.1
+
+* moon phase
+
+### 1.0
+
+* tides
+* wave heights

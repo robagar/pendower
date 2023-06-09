@@ -115,14 +115,12 @@ def draw_moon():
     data = todays_data(astronomy_data)
 
     t = data.closest_moon_phase.time
-    if t > time_to:
+    if t > time_from and t < time_to:
+        p = data.closest_moon_phase
+        x = max(time_x(t), 100)
+    else:
         p = data.current_moon_phase
         x = 100
-    else:
-        p = data.closest_moon_phase
-        x = time_x(t)
-        if x < 100:
-            x = 100
 
     # approximate angle from latitude
     r = 90 - spot.latitude
