@@ -33,6 +33,7 @@ sg = import_lib("stormglass")
 util = import_lib("util")
 bezier = import_lib("bezier")
 gradient = import_lib("gradient")
+moon = import_lib("moon")
 
 config_file = project_dir / "config.toml"
 
@@ -54,6 +55,11 @@ print(f'{time_from} → {time_to}')
 weather_data = stormglass.get_weather(spot, time_span, 'waveHeight')
 tide_data = stormglass.get_tides(spot, time_span)
 astronomy_data = stormglass.get_astronomy(spot, time_span)
+
+def todays_data(data):
+    for d in data:
+        if d.time.date() == today.date():
+            return d
 
 # actual display size
 display_width = 640
@@ -103,12 +109,34 @@ def draw_nights():
 
 
 ##############################################################################
+# moon
+
+def draw_moon():
+    data = todays_data(astronomy_data)
+
+    t = data.closest_moon_phase.time
+    if t > time_to:
+        p = data.current_moon_phase
+        x = 100
+    else:
+        p = data.closest_moon_phase
+        x = time_x(t)
+        if x < 100:
+            x = 100
+
+    # approximate angle from latitude
+    r = 90 - spot.latitude
+
+    moon.draw_moon(draw, (x,220), radius=80, phase=p.value, rotation_degrees=r) 
+
+
+##############################################################################
 # tides
 
 tide_pixels_per_metre = 50    
 
 def tide_y(h):
-    return 280 - h * tide_pixels_per_metre
+    return 460 - h * tide_pixels_per_metre
 
 def draw_tides():
     points = []
@@ -174,8 +202,8 @@ def draw_days():
 
         x = time_x(day)
 
-        if i != 0:
-            draw.line([(x,0), (x,h)], fill="gray")
+        # if i != 0:
+        #     draw.line([(x,0), (x,h)], fill="gray")
 
         x = time_x(day.shift(hours=+12))
         draw.text((x + 20, h - 130), day_name, anchor="ma", font=day_font, fill="black")
@@ -189,7 +217,7 @@ def draw_wave_height_lines_metres():
 
 def draw_wave_height_lines_feet():
     w = draw_width
-    for (h,l) in [(3, "3ft"), (6, "6ft"), (9, "9ft")]:
+    for (h,l) in [(3, "3ft"), (6, "6ft")]:
         y = bottom - util.feet_to_metres(h) * wave_pixels_per_metre
         draw.line([(0,y), (w,y)], fill="gray") 
         draw.text((10, y), l, font=wave_height_font, fill="black") 
@@ -216,6 +244,7 @@ def draw_title():
 
 def draw_all():
     draw_nights()
+    draw_moon()
     draw_tides()
     draw_wave_height_bars()
     draw_days()

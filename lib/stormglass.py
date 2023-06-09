@@ -25,6 +25,13 @@ class Tide:
 
 
 @dataclass
+class MoonPhase:
+    time: arrow.Arrow
+    description: str
+    value: float
+
+
+@dataclass
 class Astronomy:
     time: arrow.Arrow
     sunrise: arrow.Arrow
@@ -37,6 +44,9 @@ class Astronomy:
     nautical_dusk: arrow.Arrow
     civil_dawn: arrow.Arrow
     civil_dusk: arrow.Arrow
+    moon_fraction: float
+    current_moon_phase: MoonPhase
+    closest_moon_phase: MoonPhase
 
 
 class Stormglass:
@@ -112,7 +122,20 @@ class Stormglass:
             nautical_dusk=_maybe_time(d, "nauticalDusk"),
             civil_dawn=_maybe_time(d, "civilDawn"),
             civil_dusk=_maybe_time(d, "civilDusk"),
+            moon_fraction=d.get("moonFraction"),
+            current_moon_phase=self._prepare_moon_phase(d.get("moonPhase"), "current"),
+            closest_moon_phase=self._prepare_moon_phase(d.get("moonPhase"), "closest")
         ), raw_data["data"]))
+
+    def _prepare_moon_phase(self, moon_phases_data, key):
+        if moon_phases_data is not None:
+            d = moon_phases_data.get(key)
+            if d is not None:
+                return MoonPhase(
+                    time=arrow.get(d["time"]),
+                    description=d.get("text"),
+                    value=d.get("value")
+                )
 
     def _load_or_fetch_data(self, data_file, endpoint, spot, time_span, **params):
         if self._is_stale(data_file):
