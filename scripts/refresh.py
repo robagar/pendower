@@ -114,18 +114,28 @@ def draw_nights():
 def draw_moon():
     data = todays_data(astronomy_data)
 
-    t = data.closest_moon_phase.time
-    if t > time_from and t < time_to:
-        p = data.closest_moon_phase
-        x = max(time_x(t), 100)
-    else:
-        p = data.current_moon_phase
-        x = 100
-
     # approximate angle from latitude
     r = 90 - spot.latitude
+     
+    y = 220
 
-    moon.draw_moon(draw, (x,220), radius=80, phase=p.value, rotation_degrees=r) 
+    # next quarter/full/new moon, if in view and not too soon
+    t = data.closest_moon_phase.time
+    if t > time_from.shift(hours=12) and t < time_to:
+        moon.draw_moon(
+            draw, 
+            (time_x(t),y),
+            radius=80, 
+            phase=data.closest_moon_phase.value, 
+            rotation_degrees=r)
+
+    # the moon phase now
+    moon.draw_moon(
+        draw, 
+        (100,y),
+        radius=80, 
+        phase=data.current_moon_phase.value, 
+        rotation_degrees=r)
 
 
 ##############################################################################
