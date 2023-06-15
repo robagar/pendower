@@ -22,12 +22,14 @@ def draw_moon(draw, center_xy, radius, phase, rotation_degrees):
 
     box = transform_no_rotation([(-1,-1), (1,1)])
 
-    if phase == 0:
+    if phase == 0 or phase == 1:
         # new moon
+        print(f"[moon] NEW {phase}")
         draw.ellipse(box, fill=new_moon_fill, outline=new_moon_outline)
 
     elif phase < 0.5:
         # waxing  
+        print(f"[moon] WAXING {phase}")
         ps = []
         
         # limb
@@ -45,10 +47,12 @@ def draw_moon(draw, center_xy, radius, phase, rotation_degrees):
 
     elif phase == 0.5:
         # full
+        print(f"[moon] FULL {phase}")
         draw.ellipse(box, fill=fill, outline=outline)
 
     else:
         # waning
+        print(f"[moon] WANING {phase}")
         ps = []
 
         # terminator
