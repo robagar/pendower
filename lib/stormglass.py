@@ -52,6 +52,7 @@ class Astronomy:
 class Stormglass:
     def __init__(self, config, data_dir):
         self._api_key = config["api_key"]
+        self._data_source_preference = config.get("data_source_preference") or ["sg"]
         self._data_dir = data_dir
 
         self._weather_data_file = data_dir / 'weather.json'
@@ -72,13 +73,22 @@ class Stormglass:
         return self._prepare_weather_data(raw_data)
 
     def _prepare_weather_data(self, raw_data):
-        def value(d, name):
-            v = d.get(name)
-            return v["sg"] if v else None
+        data_source = None
+        def wave_height(d):
+            nonlocal data_source 
+            vs = d.get("waveHeight")
+            if vs:
+                for s in self._data_source_preference:
+                    v = vs.get(s)
+                    if v is not None:
+                        if s != data_source:
+                            print(f'[Stormglass] data source: {s}')
+                            data_source = s
+                        return v
 
         return list(map(lambda d: Weather(
             time=arrow.get(d["time"]), 
-            wave_height=value(d, "waveHeight")
+            wave_height=wave_height(d)
         ), raw_data["hours"]))
 
     def get_tides(self, spot, time_span):
@@ -154,7 +164,7 @@ class Stormglass:
         params = {
             'lat': spot.latitude,
             'lng': spot.longitude,
-            'source': 'sg', # automatically choose best source
+            # 'source': 'sg', # automatically choose best source
             'start': time_from.timestamp(),
             'end': time_to.timestamp()
         }

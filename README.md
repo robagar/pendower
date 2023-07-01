@@ -37,6 +37,7 @@ longitude = -4.947837
 
 [stormglass]
 api_key = "(your stormglass.io API key)"
+data_source_preference = ["meto", "noaa", "sg"]
 ```
 
 Test the configuration with
