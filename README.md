@@ -57,6 +57,10 @@ To refresh the display every 15 minutes with cron, run `crontab -e` and add a li
 
 ## Version History
 
+### 1.2
+
+* configurable weather data source preference
+
 ### 1.1
 
 * moon phase
