@@ -10,7 +10,7 @@ A simple app for displaying local tide and surf conditions.
 
 Designed for
 * [Raspberry Pi Zero](https://www.raspberrypi.com/products/raspberry-pi-zero/)
-* [Inky Impression 4"](https://shop.pimoroni.com/products/inky-impression-4?variant=39599238807635) or [Inky Impression 5.7"](https://shop.pimoroni.com/products/inky-impression-5-7?variant=32298701324371) e-ink display
+* [Inky Impression 4"](https://shop.pimoroni.com/products/inky-impression-4?variant=39599238807635), [Inky Impression 5.7"](https://shop.pimoroni.com/products/inky-impression-5-7?variant=32298701324371) or any other colour e-ink display, configurable
 * Pendower Beach, Cornwall - my local beach, great for swimming and very occasionally surfable :)
 * ...but can be configured for other locations
 
