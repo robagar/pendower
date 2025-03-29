@@ -62,8 +62,10 @@ def todays_data(data):
             return d
 
 # actual display size
-display_width = 640
-display_height = 400
+display_config = config.get('display')
+display_width = display_config['width']
+display_height = display_config['height']
+
 
 # draw surface size
 draw_width = display_width * 4

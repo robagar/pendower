@@ -30,6 +30,15 @@ $ pip install -r requirements.txt
 Save this with your configuration as _config.toml_ in the project root directory
 
 ```toml
+[display]
+# Inky Impression 4"
+width = 640
+height = 400
+
+# Inky Impression 5.7"
+# width = 600
+# height = 448
+
 [spot]
 name = "Pendower Beach"
 latitude = 50.204553
@@ -46,7 +55,7 @@ Test the configuration with
 $ python scripts/refresh.py
 ```
 
-*NB* If you change the configuration delete the _.json_ files in the _data_ directory before refreshing the display.
+*NB* If you change the configuration other than the `display` section, delete the _.json_ files in the _data_ directory before refreshing the display.
 
 
 To refresh the display every 15 minutes with cron, run `crontab -e` and add a line like:

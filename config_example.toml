@@ -1,6 +1,15 @@
 # 1. Edit this file with your configuration
 # 2. Save as "config.toml" in the project root directory
 
+[display]
+# Inky Impression 4"
+width = 640
+height = 400
+
+# Inky Impression 5.7"
+# width = 600
+# height = 448
+
 [spot]
 name = "Pendower Beach"
 latitude = 50.204553
